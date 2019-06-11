@@ -9,8 +9,7 @@ for (let i = 0; i < 54; i++) {
 
 function shuffle(arr) {
     for (let j = 0; j < arr.length - 1; j++) {
-        let randBase = 53 - j
-        let randIndex = Math.floor(Math.random() * randBase) + j + 1 // 这个是核心
+        let randIndex = j + Math.floor(Math.random() * (54 - j)) // 这个是核心
         let temp = arr[j]
         arr[j] = arr[randIndex]
         arr[randIndex] = temp
