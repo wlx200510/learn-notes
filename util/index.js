@@ -9,7 +9,7 @@ const calArr = [...Array(7).keys()].map(days => new Date(Date.now() - 86400000 *
 
 // 获取URL查询参数
 var q = {}
-location.search.replace(/([^?&=]+)=([^&]+)/g, (_,k,v) => q[k]=v)
+location.search.replace(/([^?&=]+)=([^&]+)/g, (_, k, v) => q[k] = v)
 var urlParams = new URLSearchParams(window.location.search)
 // urlParams.has  urlParams.get  urlParams.append  urlParams.toString
 
@@ -41,20 +41,26 @@ const summary = { ...person, ...tools }
 const isRequired = () => { throw new Error('param should not empty') }
 const hello = (name = isRequired()) => { console.log(`hello ${name}`) }
 
+//使用对象取值而存在脏数据时不报错
+const deepPick = (path, field) => {
+  const [first, ...remain] = path.split('.')
+  return remain.length > 0 ? deepPick(remain.join('.'), field[first]) : field[first]
+}
+
 //自定义字符串截断
 function curStr(str, len) {
-    let charCode = -1, strLength = 0, curStr = ''
-    for (let i = 0; i < str.length; i++) {
-        charCode = str.charCodeAt(i)
-        if (charCode >= 0 && charCode <= 128) {
-            strLength += 1
-        } else {
-            strLength += 2 // 汉字占两个长度
-        }
-        if (strLength > len) {
-            return curStr + '...'
-        }
-        curStr = curStr.concat(str[i])
+  let charCode = -1, strLength = 0, curStr = ''
+  for (let i = 0; i < str.length; i++) {
+    charCode = str.charCodeAt(i)
+    if (charCode >= 0 && charCode <= 128) {
+      strLength += 1
+    } else {
+      strLength += 2 // 汉字占两个长度
     }
-    return curStr
+    if (strLength > len) {
+      return curStr + '...'
+    }
+    curStr = curStr.concat(str[i])
+  }
+  return curStr
 }
